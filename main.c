@@ -6,20 +6,20 @@
 /*   By: linyao <linyao@student.42barcelona.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 11:18:13 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/01 11:18:14 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/02 17:09:25 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	is _valid_digit(char *s)
+int	is_valid_digit(char *s)
 {
 	int	i;
 
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] > '0' || s[i] < '9')
+		if (s[i] > '9' || s[i] < '0')
 			return (1);
 		i++;
 	}
@@ -64,16 +64,18 @@ void	destroy_mutex(t_meta_shared *meta)
 
 int	main(int ac, char **av)
 {
-	t_meta_shared	*meta;
+	t_meta_shared	meta;
 
 	if (ac != 5 && ac != 6)
 		return (write(2, "Incorrect number of arguments\n", 30), 1);
 	if (check_args(av) == 1)
 		return (1);
-	init_meta(meta, av);
-	init_philo(meta);
-	if (manage_philos_lifecycle(meta) != 0)
+	printf("test1\n");
+	init_meta(&meta, av);
+	printf("test2\n");
+	init_philo(&meta);
+	if (manage_philos_lifecycle(&meta) != 0)
 		return (1);
-	destroy_mutex(meta);
+	destroy_mutex(&meta);
 	return (0);
 }

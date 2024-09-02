@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 13:36:39 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/01 13:36:44 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/02 16:26:26 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void	init_meta(t_meta_shared *meta, char **av)
 {
 	meta->stop = false;
-	meta->n_philos_eaten_full = 0;
+	meta->n_p_eat_fl = 0;
 	meta->n_philos = ft_atoi(av[1]);
 	if (av[5])
-		meta->n_eats = av[5];
+		meta->n_eats = ft_atoi(av[5]);
 	else
 		meta->n_eats = -1;
-	meta->time_die = av[2];
-	meta->time_eat = av[3];
-	meta->time_sleep = av[4];
+	meta->time_die = ft_atoi(av[2]);
+	meta->time_eat = ft_atoi(av[3]);
+	meta->time_sleep = ft_atoi(av[4]);
 	pthread_mutex_init(meta->m_stop, NULL);
 	pthread_mutex_init(meta->m_eat, NULL);
 	pthread_mutex_init(meta->m_display, NULL);
@@ -32,7 +32,7 @@ void	init_meta(t_meta_shared *meta, char **av)
 
 void	init_philo(t_meta_shared *meta)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < meta->n_philos)

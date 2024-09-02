@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:09:27 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/01 15:09:32 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/02 16:31:39 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	*check_death(void *p)
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
-	pause(philo->meta_shared->time_die + 1);
+	ft_sleep(philo->meta_shared->time_die + 1);
 	pthread_mutex_lock(philo->meta_shared->m_stop);
 	pthread_mutex_lock(philo->meta_shared->m_eat);
-	if ((get_timestamp() - philo->lastmeal) >= \
+	if ((get_timestamp() - philo->t_lastmeal) >= \
 		(long)(philo->meta_shared->time_die) && \
 		!is_dead(philo, FLAG_QUERY))
 	{
@@ -40,7 +40,7 @@ int	get_fork(t_philo *philo)
 	put_msg(philo, " has taken left fork\n");
 	if (philo->meta_shared->n_philos == 1)
 	{
-		pause(philo->meta_shared->time_die * 2);
+		ft_sleep(philo->meta_shared->time_die * 2);
 		pthread_mutex_unlock(philo->fork_l);
 		return (0);
 	}
@@ -48,6 +48,7 @@ int	get_fork(t_philo *philo)
 	put_msg(philo, " has taken right fork\n");
 	return (1);
 }
+
 void	eat(t_philo *philo)
 {
 	put_msg(philo, " is eating\n");
@@ -55,41 +56,38 @@ void	eat(t_philo *philo)
 	philo->t_lastmeal = get_timestamp();
 	philo->n_eaten++;
 	pthread_mutex_unlock(philo->meta_shared->m_eat);
-	pause(philo->meta_shared->time_eat);
+	ft_sleep(philo->meta_shared->time_eat);
 	pthread_mutex_unlock(philo->fork_l);
 	pthread_mutex_unlock(philo->fork_r);
 	put_msg(philo, " is sleeping\n");
-	pause(philo->meta_shared->time_sleep);
-	put_msg(philo, " is thinking\n");	
+	ft_sleep(philo->meta_shared->time_sleep);
+	put_msg(philo, " is thinking\n");
 }
 
-void	*dispatch_lifecycle(void *p)
+void	*dispatch_lifecycle(void *phi)
 {
-	t_philo		*philo;
+	t_philo		*p;
 	pthread_t	t_monitor;
 
-	philo = (t_philo *)p;
-	if (philo->id % 2 == 1)
-		pause(philo->meta_shared->time_eat / 10);
-	while (!is_dead(philo, FLAG_QUERY))
+	p = (t_philo *)phi;
+	if (p->id % 2 == 1)
+		ft_sleep(p->meta_shared->time_eat / 10);
+	while (!is_dead(p, FLAG_QUERY))
 	{
-		pthread_create(&t_monitor, NULL, check_death, p);
-		if(get_fork(philo))
-			eat(philo);
-		else
+		pthread_create(&t_monitor, NULL, check_death, phi);
+		if (!get_fork(p))
 			return (pthread_detach(t_monitor), NULL);
+		eat(p);
 		pthread_detach(t_monitor);
-		if (philo->n_eaten == philo->meta_shared->n_eats)
+		if (p->n_eaten == p->meta_shared->n_eats)
 		{
-			pthread_mutex_lock(philo->meta_shared->m_stop);
-			if (++philo->meta_shared->n_philos_eaten_full == \
-					philo->meta_shared_n_philos)
+			pthread_mutex_lock(p->meta_shared->m_stop);
+			if (++p->meta_shared->n_p_eat_fl == p->meta_shared->n_philos)
 			{
-				pthread_mutex_unclok(philo->meta_shared->m_stop);
-				is_dead(philo, FLAG_STOP);
+				pthread_mutex_unlock(p->meta_shared->m_stop);
+				is_dead(p, FLAG_STOP);
 			}
-			pthread_mutex_unclok(philo->meta_shared->m_stop);
-			return (NULL);
+			return (pthread_mutex_unlock(p->meta_shared->m_stop), NULL);
 		}
 	}
 	return (NULL);
