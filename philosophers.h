@@ -31,7 +31,7 @@ typedef struct s_philo
 	long int				t_lastmeal;//time when he ate last time
 	pthread_t				thread;
 	struct s_meta_shared	*meta_shared;
-	pthread_mutex_t			*fork_l;
+	pthread_mutex_t			fork_l;
 	pthread_mutex_t			*fork_r;
 }	t_philo;
 
@@ -46,10 +46,10 @@ typedef struct s_meta_shared
 	long int		time_start;
 	bool			stop;
 	t_philo			philo[MAX_PHILOS];
-	pthread_mutex_t	*m_stop;
-	pthread_mutex_t	*m_eat;
-	pthread_mutex_t	*m_display;
-	pthread_mutex_t	*m_dead;
+	pthread_mutex_t	m_stop;
+	pthread_mutex_t	m_eat;
+	pthread_mutex_t	m_display;
+	pthread_mutex_t	m_dead;
 }	t_meta_shared;
 
 int			ft_atoi(char *s);
@@ -58,7 +58,7 @@ void		init_philo(t_meta_shared *meta);
 int			manage_philos_lifecycle(t_meta_shared *meta);
 long long	get_timestamp(void);
 void		ft_sleep(int ms);
-void		put_msg(t_philo *p, char *s);
+void		put_msg(t_philo *p, char *s, int num);
 int			is_dead(t_philo *philo, int flag);
 
 #endif

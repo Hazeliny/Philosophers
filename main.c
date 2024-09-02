@@ -49,14 +49,14 @@ void	destroy_mutex(t_meta_shared *meta)
 {
 	int	i;
 
-	pthread_mutex_destroy(meta->m_stop);
-	pthread_mutex_destroy(meta->m_eat);
-	pthread_mutex_destroy(meta->m_display);
-	pthread_mutex_destroy(meta->m_dead);
+	pthread_mutex_destroy(&meta->m_stop);
+	pthread_mutex_destroy(&meta->m_eat);
+	pthread_mutex_destroy(&meta->m_display);
+	pthread_mutex_destroy(&meta->m_dead);
 	i = 0;
 	while (i < meta->n_philos)
 	{
-		pthread_mutex_destroy(meta->philo[i].fork_l);
+		pthread_mutex_destroy(&meta->philo[i].fork_l);
 		pthread_mutex_destroy(meta->philo[i].fork_r);
 		i++;
 	}
@@ -70,9 +70,7 @@ int	main(int ac, char **av)
 		return (write(2, "Incorrect number of arguments\n", 30), 1);
 	if (check_args(av) == 1)
 		return (1);
-	printf("test1\n");
 	init_meta(&meta, av);
-	printf("test2\n");
 	init_philo(&meta);
 	if (manage_philos_lifecycle(&meta) != 0)
 		return (1);

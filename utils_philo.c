@@ -33,15 +33,15 @@ int	ft_atoi(char *s)
 
 int	is_dead(t_philo *philo, int flag)
 {
-	pthread_mutex_lock(philo->meta_shared->m_dead);
+	pthread_mutex_lock(&philo->meta_shared->m_dead);
 	if (flag)
 		philo->meta_shared->stop = true;
 	if (philo->meta_shared->stop)
 	{
-		pthread_mutex_unlock(philo->meta_shared->m_dead);
+		pthread_mutex_unlock(&philo->meta_shared->m_dead);
 		return (1);
 	}
-	pthread_mutex_unlock(philo->meta_shared->m_dead);
+	pthread_mutex_unlock(&philo->meta_shared->m_dead);
 	return (0);
 }
 
@@ -62,11 +62,17 @@ void	ft_sleep(int ms)
 		usleep(ms / 20);
 }
 
-void	put_msg(t_philo *p, char *s)
+void	put_msg(t_philo *p, char *s, int num)
 {
-	pthread_mutex_lock(p->meta_shared->m_display);
+	pthread_mutex_lock(&p->meta_shared->m_display);
 	if (!p->meta_shared->stop && !is_dead(p, FLAG_QUERY))
-		printf("%d %lld %s", p->id, (get_timestamp() - \
-			p->meta_shared->time_start), s);
-	pthread_mutex_unlock(p->meta_shared->m_display);
+	{
+		if (num < 0)
+			printf("%d %lld %s\n", p->id, (get_timestamp() - \
+				p->meta_shared->time_start), s);
+		else
+			printf("%d %lld %s ------%d times\n", p->id, \
+			(get_timestamp() - p->meta_shared->time_start), s, num);
+	}
+	pthread_mutex_unlock(&p->meta_shared->m_display);
 }
