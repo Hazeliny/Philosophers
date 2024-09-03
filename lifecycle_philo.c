@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 15:09:27 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/02 16:31:39 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/03 11:50:27 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	get_fork(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-//	put_msg(philo, " is eating\n");
 	pthread_mutex_lock(&philo->meta_shared->m_eat);
 	philo->t_lastmeal = get_timestamp();
 	philo->n_eaten++;
