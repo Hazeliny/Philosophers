@@ -12,28 +12,62 @@
 
 #include "philo_bonus.h"
 
-int	manage_philos_lifecycle(t_meta_shared *meta, sem_t *sem)
+void	*dispatch_lifecycle(t_phi *phi)
+{
+	while (!is_dead(phi, FLAG_QUERY))
+	{
+		if (phi->meta_s->sem_fork >= 2)
+		{
+			sem_wait(&phi->meta_s->sem_fork);
+			sem_wait(&phi->meta_s->sem_fork);
+			eat(phi);
+			sem_post(&phi->meta_s->sem_fork);
+			sem_post(&phi->meta_s->sem_fork);
+		}
+		else
+		{
+			
+		}
+		if (phi->n_eaten == phi->meta_s->n_eats)
+		{
+			sem_wait(&phi->meta_s->sem_stop);
+			if (++phi->meta_s->n_p_eat_fl == phi->meta_s->n_phi)
+			{
+				sem_post(&phi->meta_s->sem_stop);
+				is_dead(phi, FLAG_STOP);
+			}
+			sem_post(&phi->meta_s->sem_stop);
+		}
+	}
+	return (NULL);
+}
+
+int	manage_philos_lifecycle(t_meta *meta)
 {
 	int		i;
-	pid_t	pid[MAX_P];
 
 	i = 0;
-	while (i < meta->n_philos)
+	meta->t_start = get_timestamp();
+	while (i < meta->n_phi)
 	{
-		pid[i] = fork();
-		if (pid[i] == 0)
+		meta->phi[i].pid = fork();
+		if (meta->phi[i].pid == -1)
 		{
-			sem_wait(sem);
-			sleep(2);
-			sem_post(sem);
+			perror("Error");
+			return (-1);
 		}
+		if (meta->phi[i].pid == 0)
+			dispatch_lifecycle(&meta->phi[i]);
+		else
+			check_death(&meta->phi[i]);
 		i++;
 	}
 	i = 0;
-	while (i < meta->n_philos)
+	while (i < meta->n_phi)
 	{
-		wait(NULL);
+		waitpid(meta->phi[i].pid, NULL, 0);
 		i++;
 	}
+	return (0);
 }
 
