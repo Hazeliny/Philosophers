@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.co      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:49:20 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/03 16:12:08 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/04 16:52:49 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,16 @@
 # include <sys/stat.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <stdbool.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 # define MAX_PHILOS 201
+# define FLAG_QUERY 0
+# define FLAG_DEATH 1
+# define FLAG_STOP 2
 
 typedef struct s_phi
 {
@@ -32,20 +40,29 @@ typedef struct s_phi
 
 typedef struct s_meta
 {
-	int	n_phi;
-	int	n_p_eat_fl;
-	int	n_eats;
-	int	t_die;
-	int	t_eat;
-	int	t_sleep;
+	int			n_phi;
+	int			n_p_eat_fl;
+	int			n_eats;
+	int			t_die;
+	int			t_eat;
+	int			t_sleep;
 	long int	t_start;
 	bool		stop;
 	t_phi		phi[MAX_PHILOS];
-	sem_t		sem_fork;
-	sem_t           sem_stop;
-	sem_t           sem_eat;
-	sem_t           sem_display;
-	sem_t           sem_dead;
+	sem_t		*sem_fork;
+	sem_t		*sem_stop;
+	sem_t		*sem_eat;
+	sem_t		*sem_display;
+	sem_t		*sem_dead;
 }	t_meta;
 
+void		handle_error(char *s);
+void		init_meta(t_meta *meta, char **av);
+void		init_philo(t_meta *meta);
+int			manage_philos_lifecycle(t_meta *meta);
+int 		ft_atoi1(char *s);
+int		 	is_dead(t_phi *phi, int flag);
+long long   get_timestamp(void);
+void		ft_sleep(int ms);
+void		put_msg(t_phi *p, char *s, int num);
 #endif
