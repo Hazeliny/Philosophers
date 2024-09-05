@@ -22,27 +22,25 @@ void	*check_death(void *p)
 	{
 
 		ft_sleep(phi->meta_s->t_die + 1);
-		sem_wait(phi->meta_s->sem_stop);
 		sem_wait(phi->meta_s->sem_eat);
-		if ((get_timestamp() - phi->t_lastmeal) >= 
-				(long)(phi->meta_s->t_die) && !is_dead(phi, FLAG_QUERY))
+		if ((get_timestamp() - phi->t_lastmeal) >= \
+						(long)(phi->meta_s->t_die))
 		{
-			sem_post(phi->meta_s->sem_stop);
 			sem_post(phi->meta_s->sem_eat);
 			put_msg(phi, " died", -1);
 			is_dead(phi, FLAG_DEATH);
 			exit(1);
 		}
+		sem_post(phi->meta_s->sem_eat);
+		sem_wait(phi->meta_s->sem_stop);
 		if (phi->meta_s->n_p_eat_fl >= phi->meta_s->n_phi)
 		{
 			sem_post(phi->meta_s->sem_stop);
-			sem_post(phi->meta_s->sem_eat);
 			is_dead(phi, FLAG_STOP);
 			exit(0);
 		}
+		sem_post(phi->meta_s->sem_stop);
 	}
-	sem_post(phi->meta_s->sem_stop);
-	sem_post(phi->meta_s->sem_eat);
 	return (NULL);
 }
 
@@ -86,12 +84,9 @@ int	dispatch_lifecycle(t_phi *phi)
 		ft_sleep(phi->meta_s->t_eat / 10);
 	while (!is_dead(phi, FLAG_QUERY))
 	{
-//		pthread_create(&monitor, NULL, check_death, phi);
 		if (!get_fork(phi))
 			break ;
-//			return (pthread_detach(monitor), -1);
 		eat(phi);
-//		pthread_detach(monitor);
 		if (phi->n_eaten == phi->meta_s->n_eats)
 		{
 			sem_wait(phi->meta_s->sem_stop);
@@ -130,7 +125,6 @@ int	manage_philos_lifecycle(t_meta *meta)
 	i = 0;
 	while (i < meta->n_phi)
 	{
-//		waitpid(meta->phi[i].pid, NULL, 0);
 		waitpid(-1, &status, 0);
 		if (status != 0)
 		{

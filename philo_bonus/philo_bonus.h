@@ -24,6 +24,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <pthread.h>
+# include <signal.h>
 
 # define MAX_PHILOS 201
 # define FLAG_QUERY 0
