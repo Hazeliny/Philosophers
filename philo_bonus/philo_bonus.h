@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.co      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:49:20 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/04 16:52:49 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/05 12:49:15 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <stdbool.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <pthread.h>
 
 # define MAX_PHILOS 201
 # define FLAG_QUERY 0

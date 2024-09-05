@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.co      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:51:35 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/04 17:43:10 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/05 11:19:22 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,6 @@ int	check_args(char **av)
 
 void	clean_sem(t_meta *meta)
 {
-/*
-	int	i;
-
-	i = 0;
-	while (i < meta->n_phi)
-		kill(meta->phi[i++].pid, SIGKILL);
-*/
 	sem_close(meta->sem_fork);
 	sem_close(meta->sem_stop);
 	sem_close(meta->sem_eat);

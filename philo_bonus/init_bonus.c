@@ -6,24 +6,19 @@
 /*   By: linyao <linyao@student.42barcelona.co      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 16:13:44 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/04 17:42:12 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/05 12:43:52 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	init_meta(t_meta *meta, char **av)
+void	init_semaphore(t_meta *meta)
 {
-	meta->n_phi = ft_atoi1(av[1]);
-	meta->t_die = ft_atoi1(av[2]);
-	meta->t_eat = ft_atoi1(av[3]);
-	meta->t_sleep = ft_atoi1(av[4]);
-	if (av[5])
-		meta->n_eats = ft_atoi1(av[5]);
-	else
-		meta->n_eats = -1;
-	meta->n_p_eat_fl = 0;
-	meta->stop = false;
+	sem_unlink("/sem_fork");
+	sem_unlink("/sem_stop");
+	sem_unlink("/sem_eat");
+	sem_unlink("/sem_display");
+	sem_unlink("/sem_dead");
 	meta->sem_fork = sem_open("/sem_fork", O_CREAT, 0666, meta->n_phi);
 	if (meta->sem_fork == SEM_FAILED)
 		handle_error("sem_fork");
@@ -41,6 +36,21 @@ void	init_meta(t_meta *meta, char **av)
 		handle_error("sem_dead");
 }
 
+void	init_meta(t_meta *meta, char **av)
+{
+	meta->n_phi = ft_atoi1(av[1]);
+	meta->t_die = ft_atoi1(av[2]);
+	meta->t_eat = ft_atoi1(av[3]);
+	meta->t_sleep = ft_atoi1(av[4]);
+	if (av[5])
+		meta->n_eats = ft_atoi1(av[5]);
+	else
+		meta->n_eats = -1;
+	meta->n_p_eat_fl = 0;
+	meta->stop = false;
+	init_semaphore(meta);
+}
+
 void	init_philo(t_meta *meta)
 {
 	int	i;
@@ -51,7 +61,6 @@ void	init_philo(t_meta *meta)
 		meta->phi[i].id = i + 1;
 		meta->phi[i].n_eaten = 0;
 		meta->phi[i].t_lastmeal = 0;
-//		meta->phi[i].pid = -1;
 		meta->phi[i].meta_s = meta;
 		i++;
 	}
