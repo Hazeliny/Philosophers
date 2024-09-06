@@ -67,4 +67,6 @@ int		 	is_dead(t_phi *phi, int flag);
 long long   get_timestamp(void);
 void		ft_sleep(int ms);
 void		put_msg(t_phi *p, char *s, int num);
+void		terminate_process(t_meta *meta);
+
 #endif

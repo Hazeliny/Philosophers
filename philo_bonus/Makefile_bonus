@@ -12,7 +12,7 @@
 
 NAME = philo_bonus
 
-SRCS = main_bonus.c init_bonus.c lifecycle_bonus.c utils_bonus.c
+SRCS = main_bonus.c init_bonus.c lifecycle_bonus.c utils_bonus.c term_bonus.c
 OBJS = $(SRCS:.c=.o)
 INCLUDE = philo_bonus.h
 
