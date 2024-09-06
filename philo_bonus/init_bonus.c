@@ -36,6 +36,14 @@ void	init_semaphore(t_meta *meta)
 		handle_error("sem_dead");
 }
 
+void	init_semaphore1(t_meta *meta)
+{
+	sem_unlink("/sem_disposable");
+	meta->sem_disposable = sem_open("/sem_disposable", O_CREAT, 0600, 1);
+	if (meta->sem_disposable == SEM_FAILED)
+		handle_error("sem_disposable");
+}
+
 void	init_meta(t_meta *meta, char **av)
 {
 	meta->n_phi = ft_atoi1(av[1]);
@@ -49,6 +57,7 @@ void	init_meta(t_meta *meta, char **av)
 	meta->n_p_eat_fl = 0;
 	meta->stop = false;
 	init_semaphore(meta);
+	init_semaphore1(meta);
 }
 
 void	init_philo(t_meta *meta)

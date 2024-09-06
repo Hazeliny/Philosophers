@@ -58,11 +58,13 @@ void	clean_sem(t_meta *meta)
 	sem_close(meta->sem_eat);
 	sem_close(meta->sem_display);
 	sem_close(meta->sem_dead);
+	sem_close(meta->sem_disposable);
 	sem_unlink("/sem_fork");
 	sem_unlink("/sem_stop");
 	sem_unlink("/sem_eat");
 	sem_unlink("/sem_display");
 	sem_unlink("/sem_dead");
+	sem_unlink("/sem_disposable");
 }
 
 int	main(int ac, char **av)

@@ -26,6 +26,7 @@ void	*check_death(void *p)
 						(long)(phi->meta_s->t_die))
 		{
 			sem_post(phi->meta_s->sem_eat);
+			sem_wait(phi->meta_s->sem_disposable);
 			put_msg(phi, " died", -1);
 			is_dead(phi, FLAG_DEATH);
 			exit(1);
@@ -60,6 +61,9 @@ void	eat(t_phi *phi)
 	ft_sleep(phi->meta_s->t_eat);
 	sem_post(phi->meta_s->sem_fork);
 	sem_post(phi->meta_s->sem_fork);
+	put_msg(phi, " is sleeping", -1);
+	ft_sleep(phi->meta_s->t_sleep);
+	put_msg(phi, " is thinking", -1);
 	if (phi->n_eaten == phi->meta_s->n_eats)
 	{
 		is_dead(phi, FLAG_STOP);
@@ -71,9 +75,9 @@ void	eat(t_phi *phi)
 		}
 		sem_post(phi->meta_s->sem_stop);
 	}
-	put_msg(phi, " is sleeping", -1);
-	ft_sleep(phi->meta_s->t_sleep);
-	put_msg(phi, " is thinking", -1);
+//	put_msg(phi, " is sleeping", -1);
+//	ft_sleep(phi->meta_s->t_sleep);
+//	put_msg(phi, " is thinking", -1);
 }
 
 int	dispatch_lifecycle(t_phi *phi)

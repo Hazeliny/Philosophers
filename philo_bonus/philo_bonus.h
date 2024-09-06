@@ -56,6 +56,7 @@ typedef struct s_meta
 	sem_t		*sem_eat;
 	sem_t		*sem_display;
 	sem_t		*sem_dead;
+	sem_t		*sem_disposable;
 }	t_meta;
 
 void		handle_error(char *s);
