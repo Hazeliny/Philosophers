@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 14:58:59 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/06 14:59:06 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/07 12:49:00 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,3 @@ void	terminate_process(t_meta *meta)
 		i++;
 	}
 }
-

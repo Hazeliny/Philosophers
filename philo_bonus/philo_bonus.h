@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.co      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:49:20 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/05 12:49:15 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/07 12:48:18 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@
 
 typedef struct s_phi
 {
-	int		id;
-	int		n_eaten;
-	long int	t_lastmeal;
-	pid_t		pid;
+	int				id;
+	int				n_eaten;
+	long int		t_lastmeal;
+	pid_t			pid;
 	struct s_meta	*meta_s;
 }	t_phi;
 
@@ -63,9 +63,9 @@ void		handle_error(char *s);
 void		init_meta(t_meta *meta, char **av);
 void		init_philo(t_meta *meta);
 int			manage_philos_lifecycle(t_meta *meta);
-int 		ft_atoi1(char *s);
-int		 	is_dead(t_phi *phi, int flag);
-long long   get_timestamp(void);
+int			ft_atoi1(char *s);
+int			is_dead(t_phi *phi, int flag);
+long long	get_timestamp(void);
 void		ft_sleep(int ms);
 void		put_msg(t_phi *p, char *s, int num);
 void		terminate_process(t_meta *meta);

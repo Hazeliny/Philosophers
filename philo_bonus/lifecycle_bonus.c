@@ -6,7 +6,7 @@
 /*   By: linyao <linyao@student.42barcelona.co      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:50:53 by linyao            #+#    #+#             */
-/*   Updated: 2024/09/05 16:29:14 by linyao           ###   ########.fr       */
+/*   Updated: 2024/09/07 12:46:33 by linyao           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	*check_death(void *p)
 	t_phi	*phi;
 
 	phi = (t_phi *)p;
-
 	while (!is_dead(phi, FLAG_QUERY))
 	{
 		ft_sleep(phi->meta_s->t_die + 1);
@@ -75,9 +74,6 @@ void	eat(t_phi *phi)
 		}
 		sem_post(phi->meta_s->sem_stop);
 	}
-//	put_msg(phi, " is sleeping", -1);
-//	ft_sleep(phi->meta_s->t_sleep);
-//	put_msg(phi, " is thinking", -1);
 }
 
 int	dispatch_lifecycle(t_phi *phi)
